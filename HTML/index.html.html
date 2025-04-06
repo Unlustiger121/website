@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Rogue Store</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      background-color: #444;
+      color: white;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #666;
+    }
+
+    .toggle-rain {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+
+    .login-button {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+
+    #login-form {
+      position: fixed;
+      top: 60px;
+      right: 10px;
+      background: rgba(0,0,0,0.8);
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      z-index: 1001;
+    }
+
+    #login-form input {
+      display: block;
+      margin: 5px 0;
+      padding: 5px;
+      width: 150px;
+    }
+
+    #blur-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .rain {
+      pointer-events: none;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.1) 0px,
+        rgba(255, 255, 255, 0.1) 2px,
+        transparent 2px,
+        transparent 10px
+      );
+      animation: rain 0.3s linear infinite;
+    }
+
+    @keyframes rain {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 0 10px;
+      }
+    }
+
+    #prices {
+      text-align: center;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Blur Overlay -->
+  <div id="blur-overlay"></div>
+
+  <!-- Regen Effekt -->
+  <div id="rain" class="rain"></div>
+
+  <!-- Willkommen -->
+  <div id="welcome" class="center">
+    <h1>Willkommen zum Rogue Store</h1>
+    <button onclick="startSite()">Start</button>
+  </div>
+
+  <!-- Hauptbereich -->
+  <div id="main" class="hidden center">
+    <h2>Wähle eine Option</h2>
+    <button onclick="window.open('https://discord.gg/S2GaDquKNa', '_blank')">Discord</button>
+    <button onclick="showLogin()">Import</button>
+  </div>
+
+  <!-- Preise (wird nicht mehr benötigt, kann entfernt werden wenn gewünscht) -->
+  <div id="prices" class="hidden">
+    <h1>Angebote</h1>
+    <div style="margin-top: 4cm;">
+      <div class="pack">Import Pack</div>
+      <div class="price">20 Euro</div>
+    </div>
+  </div>
+
+  <!-- Login UI -->
+  <button class="login-button" onclick="toggleLoginForm()">🔐 Login</button>
+
+  <div id="login-form">
+    <input type="text" id="code" placeholder="Code">
+    <input type="password" id="password" placeholder="Passwort">
+    <button onclick="checkLogin()">Einloggen</button>
+  </div>
+
+  <!-- Regen Toggle -->
+  <button class="toggle-rain" onclick="toggleRain()">📺 Old TV On/Off</button>
+
+  <script>
+    function startSite() {
+      document.getElementById("welcome").style.display = "none";
+      document.getElementById("main").classList.remove("hidden");
+    }
+
+    function toggleRain() {
+      const rain = document.getElementById("rain");
+      const blur = document.getElementById("blur-overlay");
+      const isOn = rain.style.display !== "none";
+      blur.style.opacity = "1";
+
+      setTimeout(() => {
+        rain.style.display = isOn ? "none" : "block";
+        blur.style.opacity = "0";
+      }, 300);
+    }
+
+    function toggleLoginForm() {
+      const form = document.getElementById("login-form");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    function showLogin() {
+      toggleLoginForm();
+    }
+
+    function checkLogin() {
+      const code = document.getElementById("code").value;
+      const password = document.getElementById("password").value;
+      if (code === "2010" && password === "Rogue!") {
+        window.location.href = "https://docs.google.com/document/d/1APnxqLyx3Chh7JoDHXGmKY9zgLffENDzerf7_4oVoWg/edit?usp=sharing";
+      } else {
+        alert("Falscher Code oder Passwort!");
+      }
+    }
+  </script>
+</body>
+</html>
+
